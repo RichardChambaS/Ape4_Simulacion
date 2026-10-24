@@ -92,7 +92,7 @@ to go
   registrar-netlogo
   display
   ; Esta pausa no cambia el paso del modelo y no se incluye en el tiempo de calculo.
-  if pausa > 0 [wait pausa]
+  if PAUSA > 0 [wait PAUSA]
 end
 
 to avanzar-estados
@@ -192,7 +192,7 @@ end
     <button x="10" y="10" height="40" disableUntilTicks="false" forever="false" kind="Observer" width="75" display="setup">setup</button>
     <button x="95" y="10" height="40" disableUntilTicks="true" forever="true" kind="Observer" width="70" display="go">go</button>
     <button x="175" y="10" height="40" disableUntilTicks="false" forever="false" kind="Observer" width="130" display="ACTUALIZAR JAVA">actualizar-desde-java</button>
-    <slider x="315" step="0.05" y="5" max="0.5" width="150" display="Pausa (s)" height="55" min="0" direction="Horizontal" default="0.1" variable="pausa"></slider>
+    <slider x="315" step="0.05" y="5" max="0.5" width="150" display="PAUSA" height="55" min="0" direction="Horizontal" default="0.1" variable="PAUSA" units="s"></slider>
     <monitor x="470" precision="0" y="5" height="55" fontSize="10" width="90" display="S (azul)">count turtles with [estado = "S"]</monitor>
     <monitor x="565" precision="0" y="5" height="55" fontSize="10" width="90" display="I (rojo)">count turtles with [estado = "I"]</monitor>
     <monitor x="660" precision="0" y="5" height="55" fontSize="10" width="90" display="R (verde)">count turtles with [estado = "R"]</monitor>
@@ -371,5 +371,5 @@ Ver README.md para instalacion, estructura y resultados comprobados.
       </indicator>
     </shape>
   </linkShapes>
-  <previewCommands>setup set pausa 0 repeat 30 [go]</previewCommands>
+  <previewCommands>setup set PAUSA 0 repeat 30 [go]</previewCommands>
 </model>

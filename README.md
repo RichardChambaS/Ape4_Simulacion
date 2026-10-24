@@ -66,10 +66,14 @@ El botón **ACTUALIZAR JAVA** reinicia también la curva de NetLogo para que las
 simulaciones comiencen con los mismos parámetros. Primero hay que volver a ejecutar
 Java; el botón no compila ni ejecuta Java por su cuenta.
 
-El control **Pausa (s)** empieza en `0.10`. Puedes aumentarlo hasta
+El control **PAUSA** (en segundos) empieza en `0.10`. Puedes aumentarlo hasta
 `0.50` para observar más despacio. La velocidad visual no cambia los parámetros
 ni la unidad de tiempo del modelo. También puedes usar la barra de velocidad
 de NetLogo si necesitas reducir más el ritmo.
+
+El nombre del deslizador debe seguir siendo `PAUSA`: NetLogo 7.0.4 usa el texto
+visible del deslizador para definir su variable en la interfaz. La unidad `s`
+se configura por separado. Para detener y reanudar la ejecución, pulsa **go**.
 
 Los colores representan el estado actual: azul = susceptible, rojo = infectado,
 verde = recuperado. La etiqueta **P0** identifica al paciente cero y permanece
