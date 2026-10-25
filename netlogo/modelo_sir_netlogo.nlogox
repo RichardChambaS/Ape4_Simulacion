@@ -32,7 +32,7 @@ to setup
       set size 1.4
       set estado "S"
       if who < infectados-iniciales [set estado "I"]
-      if who = 0 [set label "P0" set label-color black set size 1.8]
+      if who = 0 and infectados-iniciales > 0 [set label "P0" set label-color black set size 1.8]
       pintar
     ]
   ]
@@ -70,8 +70,10 @@ to cargar-parametros-java
   ]
   if item 2 valores < 0 or item 2 valores > 1 [error "Beta debe estar entre 0 y 1."]
   if item 3 valores < 0 or item 3 valores > 1 [error "Gamma debe estar entre 0 y 1."]
-  if item 4 valores < 1 or item 4 valores != floor item 4 valores [error "El tiempo máximo debe ser un entero positivo."]
-  if item 5 valores < 0 or item 5 valores != floor item 5 valores [error "La semilla debe ser un entero no negativo."]
+  if item 4 valores < 0 or item 4 valores != floor item 4 valores [error "El tiempo máximo debe ser un entero no negativo."]
+  if item 5 valores < -2147483648 or item 5 valores > 2147483647 or item 5 valores != floor item 5 valores [
+    error "La semilla debe ser un entero entre -2147483648 y 2147483647."
+  ]
   set poblacion item 0 valores
   set infectados-iniciales item 1 valores
   set beta item 2 valores
@@ -101,9 +103,11 @@ to avanzar-estados
   foreach sort turtles with [estado = "I"] [persona ->
     ask persona [
       let contacto one-of other turtles
-      if [estado] of contacto = "S" [
-        if random-float 1 < beta [
-          ask contacto [set siguiente-estado "I"]
+      if contacto != nobody [
+        if [estado] of contacto = "S" [
+          if random-float 1 < beta [
+            ask contacto [set siguiente-estado "I"]
+          ]
         ]
       ]
       if random-float 1 < gamma [set siguiente-estado "R"]
@@ -192,12 +196,12 @@ end
     <button x="10" y="10" height="40" disableUntilTicks="false" forever="false" kind="Observer" width="75" display="setup">setup</button>
     <button x="95" y="10" height="40" disableUntilTicks="true" forever="true" kind="Observer" width="70" display="go">go</button>
     <button x="175" y="10" height="40" disableUntilTicks="false" forever="false" kind="Observer" width="130" display="ACTUALIZAR JAVA">actualizar-desde-java</button>
-    <slider x="315" step="0.05" y="5" max="0.5" width="150" display="PAUSA" height="55" min="0" direction="Horizontal" default="0.1" variable="PAUSA" units="s"></slider>
-    <monitor x="470" precision="0" y="5" height="55" fontSize="10" width="90" display="S (azul)">count turtles with [estado = "S"]</monitor>
-    <monitor x="565" precision="0" y="5" height="55" fontSize="10" width="90" display="I (rojo)">count turtles with [estado = "I"]</monitor>
-    <monitor x="660" precision="0" y="5" height="55" fontSize="10" width="90" display="R (verde)">count turtles with [estado = "R"]</monitor>
-    <monitor x="755" precision="4" y="5" height="55" fontSize="10" width="100" display="Cálculo (s)">segundos-calculo</monitor>
-    <monitor x="10" precision="2" y="65" height="35" fontSize="12" width="845" display="Parámetros sincronizados con Java">word "SIR | N = " poblacion " | I inicial = " infectados-iniciales " | beta = " beta " | gamma = " gamma " | " tiempo-maximo " pasos | semilla = " semilla</monitor>
+    <slider x="315" step="0.05" y="5" max="0.5" width="150" display="PAUSA" height="55" min="0" direction="Horizontal" default="0.0" variable="PAUSA" units="s"></slider>
+    <monitor x="470" precision="0" y="5" height="60" fontSize="10" width="100" display="S (azul)">count turtles with [estado = "S"]</monitor>
+    <monitor x="565" precision="0" y="5" height="60" fontSize="10" width="100" display="I (rojo)">count turtles with [estado = "I"]</monitor>
+    <monitor x="660" precision="0" y="5" height="60" fontSize="10" width="100" display="R (verde)">count turtles with [estado = "R"]</monitor>
+    <monitor x="755" precision="4" y="5" height="60" fontSize="10" width="100" display="Cálculo (s)">segundos-calculo</monitor>
+    <monitor x="10" precision="2" y="65" height="60" fontSize="12" width="845" display="Parámetros sincronizados con Java">word "SIR | N = " poblacion " | I inicial = " infectados-iniciales " | beta = " beta " | gamma = " gamma " | " tiempo-maximo " pasos | semilla = " semilla</monitor>
     <plot x="275" autoPlotX="true" yMax="100.0" autoPlotY="true" yAxis="Personas" y="110" xMin="0.0" height="250" legend="true" xMax="100.0" yMin="0.0" width="280" xAxis="Tiempo" display="Evolucion NetLogo">
       <setup></setup>
       <update></update>
@@ -279,7 +283,7 @@ infectados iniciales. I representa el total de infectados.
 1. Ejecutar Java desde la raiz del proyecto para generar los CSV de resultados y parametros.
 2. Pulsar ACTUALIZAR JAVA: reinicia el escenario y carga ambos archivos.
 3. Pulsar go: boton continuo. Se detiene al alcanzar el paso 100.
-4. Ajustar la pausa para observar el movimiento. El valor inicial es 0.10 s.
+4. Ajustar PAUSA para observar el movimiento. El valor inicial es 0.00 s.
 
 ## REGLAS
 

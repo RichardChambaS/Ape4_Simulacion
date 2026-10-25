@@ -66,7 +66,7 @@ El botón **ACTUALIZAR JAVA** reinicia también la curva de NetLogo para que las
 simulaciones comiencen con los mismos parámetros. Primero hay que volver a ejecutar
 Java; el botón no compila ni ejecuta Java por su cuenta.
 
-El control **PAUSA** (en segundos) empieza en `0.10`. Puedes aumentarlo hasta
+El control **PAUSA** (en segundos) empieza en `0.00`. Puedes aumentarlo hasta
 `0.50` para observar más despacio. La velocidad visual no cambia los parámetros
 ni la unidad de tiempo del modelo. También puedes usar la barra de velocidad
 de NetLogo si necesitas reducir más el ritmo.
@@ -89,7 +89,7 @@ la variable I cuenta a todos los infectados.
 | Infectados iniciales | 5 |
 | Recuperados iniciales | 0 |
 | Beta, probabilidad de transmisión por contacto | 0.30 |
-| Gamma, probabilidad de recuperación por paso en el escenario actual | 0.40 |
+| Gamma, probabilidad de recuperación por paso | 0.10 |
 | Tiempo máximo | 100 pasos |
 
 Java es la fuente de los parámetros. Al ejecutar el programa, exporta población,
@@ -98,6 +98,15 @@ infectados iniciales, beta, gamma, tiempo máximo y semilla a
 Así, al cambiar `GAMMA` en Java, no hace falta editar NetLogo manualmente. La semilla
 actual es `42`. Ambas herramientas usan los mismos parámetros, aunque las curvas
 pueden diferir porque usan generadores aleatorios distintos.
+
+Antes de simular se comprueban los parámetros: población entera positiva,
+infectados iniciales entre 0 y la población, beta y gamma finitos en `[0, 1]`,
+tiempo entero no negativo y semilla entera entre `-2147483648` y `2147483647`.
+Una población de una persona es válida: no tiene contactos, pero puede recuperarse.
+El tiempo 0 produce solamente el estado inicial. Java informa los errores antes
+de exportar, por lo que una configuración inválida no reemplaza los CSV anteriores.
+NetLogo también valida los parámetros y exige conteos S, I y R enteros en el CSV.
+`0.9999999` es válido para beta o gamma; no es válido como número de personas.
 
 En cada paso:
 
@@ -201,8 +210,8 @@ Las comparaciones usan negro para Java y naranja para NetLogo. La curva completa
 de Java se carga desde el principio; NetLogo incorpora un punto por paso.
 
 La tabla siguiente es una referencia de la configuración base de la ficha
-(gamma = 0.10, semilla 42). El escenario actual usa gamma = 0.40, así que sus
-curvas y métricas cambian al ejecutar Java y sincronizar NetLogo.
+(gamma = 0.10, semilla 42). Si cambias parámetros, sus curvas y métricas cambian
+al ejecutar Java y sincronizar NetLogo.
 
 | Medida | Java | NetLogo 7.0.4 |
 | --- | ---: | ---: |
